@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.pyd
+env/
+venv/
+ENV/
+build/
+dist/
+.python-version
+
+# dotenv
+.env
+
+# SQLite DB files
+*.db
+
+# VS Code
+.vscode/
+
+# Node
+node_modules/
+
+# Mac
+.DS_Store
