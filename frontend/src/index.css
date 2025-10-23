@@ -2,16 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-.layout { @apply max-w-7xl mx-auto px-6 py-4 }
-.card { @apply bg-white border border-slate-200 rounded-xl p-6 shadow-sm }
 .input { @apply w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300 }
-
-.btn { @apply inline-flex items-center gap-2 rounded-md text-sm }
-.btn-primary { @apply px-3 py-2 bg-sky-600 text-white hover:bg-sky-700 }
-.btn-action { @apply px-2.5 py-1.5 border hover:bg-slate-50 text-slate-700 }
-.btn-danger { @apply px-2.5 py-1.5 text-red-600 border border-red-100 hover:bg-red-50 }
-
-.list { @apply divide-y divide-slate-100 }
-.list-item { @apply py-4 flex items-center justify-between hover:bg-slate-50 }
-
-.badge { @apply inline-block text-xs px-2 py-0.5 rounded-full border mr-2 bg-slate-100 text-slate-700 border-slate-200 }

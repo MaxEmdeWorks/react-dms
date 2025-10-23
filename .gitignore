@@ -6,6 +6,7 @@ __pycache__/
 *.pyd
 env/
 venv/
+.venv/
 ENV/
 build/
 dist/
@@ -25,3 +26,6 @@ node_modules/
 
 # Mac
 .DS_Store
+
+# Minio
+minio-data/

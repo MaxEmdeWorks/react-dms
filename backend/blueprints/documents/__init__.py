@@ -1,5 +1,7 @@
+import os, json
+
 from flask import Blueprint, jsonify, request
-from models.database import db, Document
+from models.database import db, Document, DocumentFile
 
 bp = Blueprint('documents', __name__, url_prefix='/api')
 
@@ -76,10 +78,33 @@ def delete_document(doc_id: int):
     if not doc:
         return jsonify({'error': 'not found'}), 404
 
-    # Delete document
-    db.session.delete(doc)
-    db.session.commit()
+    # Remove associated files from storage
+    try:
+        from storage.minio_client import client, MINIO_BUCKET
+        # Prepare deletes queue path
+        queue_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'deletes_queue.jsonl'))
+        files = DocumentFile.query.filter_by(document_id=doc_id).all()
+        for f in files:
+            try:
+                # Remove file from MinIO
+                client.remove_object(MINIO_BUCKET, f.storage_key)
+            except Exception as exc:
+                try:
+                    with open(queue_path, 'a') as qf:
+                        # Log failed delete to queue for later processing
+                        qf.write(json.dumps({'bucket': MINIO_BUCKET, 'key': f.storage_key}) + "\n")
+                except Exception:
+                    pass
+    except Exception:
+        pass
 
-    # Return result
+    # Delete document
+    try:
+        db.session.delete(doc)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({'error': 'failed to delete document'}), 500
+
     return '', 204
 
